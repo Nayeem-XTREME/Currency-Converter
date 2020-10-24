@@ -1,4 +1,4 @@
-const key = 'cb82c3405ae982d702305ad181f18e37';
+const key = 'ff43dc8de70f112322225d2a';
 
 const from = document.querySelector('#from-input');
 const to = document.querySelector('#to-input');
@@ -12,7 +12,7 @@ const swap = document.querySelector('.swap');
 
 
 async function setOptions() {
-    const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}`);
+    const res = await fetch(`https://open.exchangerate-api.com/v6/latest`);
     const data = await res.json();
 
     for (x in data.rates) {
@@ -30,11 +30,13 @@ async function calculate(currency) {
 
     const input = from.value;
 
-    const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}`);
+    const res = await fetch(`https://v6.exchangerate-api.com/v6/${key}/latest/${currency}`);
     const data = await res.json();
 
-    rates = data.rates;
-    // console.log(rates.currency);
+    rates = data.conversion_rates;
+    console.log(rates[currency]);
+
+    
 }
 
 
@@ -46,4 +48,4 @@ currencyTo.addEventListener('change', calculate);
 
 setOptions();
 
-calculate(currencyFrom.value);
+calculate('USD');
