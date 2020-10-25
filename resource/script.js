@@ -13,42 +13,55 @@ const swap = document.querySelector('.swap');
 
 // SET SELECT OPTIONS
 async function setOptions() {
-    const res = await fetch(`https://open.exchangerate-api.com/v6/latest`);
-    const data = await res.json();
 
-    currencyFrom.remove(currencyFrom.value);
-    currencyTo.remove(currencyTo.value);
+    try {
+        const res = await fetch(`https://open.exchangerate-api.com/v6/latest`);
+        const data = await res.json();
 
-    for (x in data.rates) {
-        const option1 = document.createElement('option');
-        const option2 = document.createElement('option');
+        currencyFrom.remove(currencyFrom.value);
+        currencyTo.remove(currencyTo.value);
 
-        option1.text = x;
-        option1.value = x;
+        for (x in data.rates) {
+            const option1 = document.createElement('option');
+            const option2 = document.createElement('option');
 
-        option2.text = x;
-        option2.value = x;
+            option1.text = x;
+            option1.value = x;
 
-        currencyFrom.add(option1);
-        currencyTo.add(option2);
+            option2.text = x;
+            option2.value = x;
+
+            currencyFrom.add(option1);
+            currencyTo.add(option2);
+        }
+    } 
+    
+    catch (error) {
+        alert(error);
     }
 }
 
 // CURRENCY CONVERSION
 async function calculate() {
 
-    const fromValue = currencyFrom.value;
-    const toValue = currencyTo.value;
+    try {
+        const fromValue = currencyFrom.value;
+        const toValue = currencyTo.value;
 
-    const input = from.value;
+        const input = from.value;
 
-    const res = await fetch(`https://v6.exchangerate-api.com/v6/${key}/latest/${fromValue}`, {mode: 'cors'});
-    const data = await res.json();
+        const res = await fetch(`https://v6.exchangerate-api.com/v6/${key}/latest/${fromValue}`, {mode: 'cors'});
+        const data = await res.json();
 
-    rates = data.conversion_rates;
-    to.value = input * rates[currencyTo.value];
+        rates = data.conversion_rates;
+        to.value = input * rates[currencyTo.value];
 
-    conversionRate.innerText = `1 ${fromValue} = ${rates[currencyTo.value]} ${toValue}`;
+        conversionRate.innerText = `1 ${fromValue} = ${rates[currencyTo.value]} ${toValue}`;
+    }
+
+    catch (error) {
+        alert(error);
+    }
 
 }
 
