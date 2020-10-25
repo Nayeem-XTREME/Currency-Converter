@@ -69,3 +69,5 @@ currencyFrom.addEventListener('change', calculate);
 currencyTo.addEventListener('change', calculate);
 
 swap.addEventListener('click', swapFunction);
+
+calculate();
