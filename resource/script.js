@@ -15,37 +15,48 @@ async function setOptions() {
     const res = await fetch(`https://open.exchangerate-api.com/v6/latest`);
     const data = await res.json();
 
-    for (x in data.rates) {
-        const option = document.createElement('option');
-        option.text = x;
+    currencyFrom.remove(currencyFrom.value);
+    currencyTo.remove(currencyTo.value);
 
-        currencyFrom.add(option);
+    for (x in data.rates) {
+        const option1 = document.createElement('option');
+        const option2 = document.createElement('option');
+
+        option1.text = x;
+        option1.value = x;
+
+        option2.text = x;
+        option2.value = x;
+
+        currencyFrom.add(option1);
+        currencyTo.add(option2);
     }
 
 }
 
-async function calculate(currency) {
+async function calculate() {
 
-    console.log(typeof(currency));
+    const fromValue = currencyFrom.value;
+    const toValue = currencyTo.value;
+
+    console.log(fromValue, typeof(fromValue));
 
     const input = from.value;
 
-    const res = await fetch(`https://v6.exchangerate-api.com/v6/${key}/latest/${currency}`);
+    const res = await fetch(`https://v6.exchangerate-api.com/v6/${key}/latest/${fromValue}`, {mode: 'cors'});
     const data = await res.json();
 
     rates = data.conversion_rates;
-    console.log(rates[currency]);
+    console.log(input * rates[currencyTo.value]);
 
     
 }
 
-
+setOptions();
 
 from.addEventListener('input', calculate);
 
 currencyFrom.addEventListener('change', calculate);
 currencyTo.addEventListener('change', calculate);
 
-setOptions();
-
-calculate('USD');
+calculate();
