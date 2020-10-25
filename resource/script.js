@@ -1,3 +1,4 @@
+// API KEY
 const key = 'ff43dc8de70f112322225d2a';
 
 const from = document.querySelector('#from-input');
@@ -6,11 +7,11 @@ const to = document.querySelector('#to-input');
 const currencyFrom = document.querySelector('#from');
 const currencyTo = document.querySelector('#to');
 
+const conversionRate = document.getElementById('conversion_rate_p');
+
 const swap = document.querySelector('.swap');
 
-// console.log(from, to, currencyFrom, currencyTo, swap);
-
-
+// SET SELECT OPTIONS
 async function setOptions() {
     const res = await fetch(`https://open.exchangerate-api.com/v6/latest`);
     const data = await res.json();
@@ -31,15 +32,13 @@ async function setOptions() {
         currencyFrom.add(option1);
         currencyTo.add(option2);
     }
-
 }
 
+// CURRENCY CONVERSION
 async function calculate() {
 
     const fromValue = currencyFrom.value;
     const toValue = currencyTo.value;
-
-    console.log(fromValue, typeof(fromValue));
 
     const input = from.value;
 
@@ -47,16 +46,26 @@ async function calculate() {
     const data = await res.json();
 
     rates = data.conversion_rates;
-    console.log(input * rates[currencyTo.value]);
+    to.value = input * rates[currencyTo.value];
 
-    
+    conversionRate.innerText = `1 ${fromValue} = ${rates[currencyTo.value]} ${toValue}`;
+
+}
+
+
+// SWAP BUTTON EVENT LISTENER
+const swapFunction = () => {
+    const temp = currencyFrom.value;
+    currencyFrom.value = currencyTo.value;
+    currencyTo.value = temp;
+
+    calculate();
 }
 
 setOptions();
 
 from.addEventListener('input', calculate);
-
 currencyFrom.addEventListener('change', calculate);
 currencyTo.addEventListener('change', calculate);
 
-calculate();
+swap.addEventListener('click', swapFunction);
