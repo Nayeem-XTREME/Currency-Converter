@@ -12,7 +12,7 @@ const conversionRate = document.getElementById('conversion_rate_p');
 const swap = document.querySelector('.swap');
 
 // SET SELECT OPTIONS
-async function setOptions() {
+const setOptions = async () => {
 
     try {
         const res = await fetch(`https://open.exchangerate-api.com/v6/latest`);
@@ -42,7 +42,7 @@ async function setOptions() {
 }
 
 // CURRENCY CONVERSION
-async function calculate() {
+const calculate = async () => {
 
     try {
         const fromValue = currencyFrom.value;
